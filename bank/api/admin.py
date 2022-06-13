@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import User, Client, Account, Transaction, Withdraw, Deposit
+
+admin.site.register(User)
+admin.site.register(Client)
+admin.site.register(Account)
+admin.site.register(Transaction)
+admin.site.register(Withdraw)
+admin.site.register(Deposit)
