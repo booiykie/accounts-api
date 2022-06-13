@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from models import User, Client, Account, Transaction, Withdraw, Deposit
+from .models import User, Client, Account, Transaction, Withdraw, Deposit
 
 
 class UserSerializer(serializers.ModelSerializer):

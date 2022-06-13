@@ -18,7 +18,7 @@ class User(models.Model):
 class Client(models.Model):
     name = models.CharField(max_length=250)
     address = models.CharField(max_length=250)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def json_object(self):
         return {
@@ -60,8 +60,7 @@ class Transaction(models.Model):
         return str(self.id)
 
     id = models.IntegerField(primary_key=True, unique=True)
-    account = models.ForeignKey(Account, on_delete=models.SET_NULL, default=None, null=True)
-    client = models.ForeignKey(Client, on_delete=models.SET_NULL, default=None, null=True)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
     action = models.CharField(max_length=200)
     amount = models.DecimalField(default=0, max_digits=12, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -69,9 +68,9 @@ class Transaction(models.Model):
 
 class Withdraw(models.Model):
     amount = models.FloatField()
-    transaction = models.ForeignKey(Transaction)
+    transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
 
 
 class Deposit(models.Model):
     amount = models.FloatField()
-    transaction = models.ForeignKey(Transaction)
+    transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)

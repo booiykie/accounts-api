@@ -1,12 +1,26 @@
 from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
-from views import user_views, client_views
+
+from .api_views.user_views import UserList, UserDetail
+from .api_views.client_views import ClientList, ClientDetail
+from .api_views.account_views import AccountList, AccountDetail
+from .api_views.account_views import TransactionList, TransactionDetail
+from .api_views.account_views import WithdrawList, WithdrawDetail
+from .api_views.account_views import DepositList, DepositDetail
 
 urlpatterns = [
-    path('users/', user_views.ClientList.as_view()),
-    path('users/<int:pk>/', user_views.ClientDetail.as_view()),
-    path('clients/', client_views.ClientList.as_view()),
-    path('clients/<int:pk>/', client_views.ClientDetail.as_view()),
+    path('users/', UserList.as_view()),
+    path('users/<int:pk>/', UserDetail.as_view()),
+    path('clients/', ClientList.as_view()),
+    path('clients/<int:pk>/', ClientDetail.as_view()),
+    path('account/', AccountList.as_view()),
+    path('account/<int:pk>/', AccountDetail.as_view()),
+    path('transactions/', TransactionList.as_view()),
+    path('transactions/<int:pk>/', TransactionDetail.as_view()),
+    path('withdraw/', WithdrawList.as_view()),
+    path('withdraw/<int:pk>/', WithdrawDetail.as_view()),
+    path('deposit/', DepositList.as_view()),
+    path('deposit/<int:pk>/', DepositDetail.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
