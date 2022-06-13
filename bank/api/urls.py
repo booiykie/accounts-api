@@ -7,6 +7,7 @@ from .api_views.account_views import AccountList, AccountDetail
 from .api_views.account_views import TransactionList, TransactionDetail
 from .api_views.account_views import WithdrawList, WithdrawDetail
 from .api_views.account_views import DepositList, DepositDetail
+from .api_views.report_views import BankReport, TransactionsReport
 
 urlpatterns = [
     path('users/', UserList.as_view()),
@@ -21,6 +22,8 @@ urlpatterns = [
     path('withdraw/<int:pk>/', WithdrawDetail.as_view()),
     path('deposit/', DepositList.as_view()),
     path('deposit/<int:pk>/', DepositDetail.as_view()),
+    path('accounts_report/', BankReport.as_view()),
+    path('transactions_report/', TransactionsReport.as_view())
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
