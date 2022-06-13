@@ -42,7 +42,7 @@ class Account(models.Model):
     open_date = models.CharField(max_length=250)
     account_type = models.PositiveSmallIntegerField(choices=ACCOUNT_TYPES, default=SAVINGS)
     balance = models.DecimalField(default=0, max_digits=12, decimal_places=2)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, default=None)
 
     def json_object(self):
         return {
@@ -61,7 +61,7 @@ class Transaction(models.Model):
 
     id = models.IntegerField(primary_key=True, unique=True)
     account = models.ForeignKey(Account, on_delete=models.SET_NULL, default=None, null=True)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, default=None, null=True)
+    client = models.ForeignKey(Client, on_delete=models.SET_NULL, default=None, null=True)
     action = models.CharField(max_length=200)
     amount = models.DecimalField(default=0, max_digits=12, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -74,5 +74,4 @@ class Withdraw(models.Model):
 
 class Deposit(models.Model):
     amount = models.FloatField()
-    account = models.ForeignKey(Account)
     transaction = models.ForeignKey(Transaction)
