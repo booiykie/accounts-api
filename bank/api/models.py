@@ -9,7 +9,6 @@ class User(models.Model):
     def __str__(self):
         return self.name
 
-    id = models.IntegerField(primary_key=True, unique=True)
     name = models.CharField(max_length=200)
     surname = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -26,20 +25,20 @@ class Client(models.Model):
             "address": self.address
         }
 
-    def __str_(self):
-        return self.name
+    def __str__(self):
+        return f"{self.name} - {self.user.name}"
 
 
 class Account(models.Model):
-    SAVINGS = 1
-    CREDIT = 2
+    SAVINGS = 0
+    CREDIT = 1
     # allow account types translation.
     ACCOUNT_TYPES = (
        (SAVINGS, _('SAVINGS')),
-       (CREDIT, _('')),
+       (CREDIT, _('CREDIT')),
     )
     name = models.CharField(max_length=250)
-    open_date = models.CharField(max_length=250)
+    open_date = models.DateTimeField(auto_now_add=True)
     account_type = models.PositiveSmallIntegerField(choices=ACCOUNT_TYPES, default=SAVINGS)
     balance = models.DecimalField(default=0, max_digits=12, decimal_places=2)
     client = models.ForeignKey(Client, on_delete=models.CASCADE, default=None)
@@ -51,26 +50,37 @@ class Account(models.Model):
         }
 
     def __str__(self):
-        return self.account_type
+        return f"Account: {self.ACCOUNT_TYPES[self.account_type][1]} for {self.client} "
 
 
 class Transaction(models.Model):
-
-    def __str__(self):
-        return str(self.id)
-
-    id = models.IntegerField(primary_key=True, unique=True)
+    DEPOSIT = 0
+    WITHDRAWAL = 1
+    # allow account types translation.
+    ACTIONS = (
+        (DEPOSIT, _('DEPOSIT')),
+        (WITHDRAWAL, _('WITHDRAWAL')),
+    )
     account = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
-    action = models.CharField(max_length=200)
+    action = models.PositiveSmallIntegerField(choices=ACTIONS, default=DEPOSIT)
     amount = models.DecimalField(default=0, max_digits=12, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.account} - {self.ACTIONS[self.action][1]} : {self.amount}"
 
 
 class Withdraw(models.Model):
     amount = models.FloatField()
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"Withdrawal: {self.amount} - {self.transaction.id}"
+
 
 class Deposit(models.Model):
     amount = models.FloatField()
     transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Deposit: {self.amount} - {self.transaction.id}"
